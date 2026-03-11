@@ -3,110 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hogwarts Orión | Tournament & Records</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Hogwarts Orión | Arena Deportiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --bg: #050505; --card: rgba(15, 15, 15, 0.98); --border: rgba(212, 175, 55, 0.3); }
-        body { margin: 0; background: var(--bg); color: #eee; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at top, #1a1a2e 0%, #050505 100%); background-attachment: fixed; }
+        :root { --primary: #1a2a6c; --secondary: #b21f1f; --accent: #fdbb2d; --bg: #f4f7f6; --text: #333; }
         
-        .header { padding: 25px; text-align: center; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.7); }
-        .header h1 { font-family: 'Cinzel', serif; color: var(--gold); letter-spacing: 5px; margin: 0; font-size: 1.8em; text-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; }
         
-        nav { display: flex; justify-content: center; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .tab-btn { background: none; border: none; color: #666; padding: 15px 20px; font-family: 'Cinzel'; cursor: pointer; font-size: 0.75em; transition: 0.3s; }
-        .tab-btn.active { color: var(--gold); border-bottom: 3px solid var(--gold); text-shadow: 0 0 10px var(--gold); }
-
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: none; }
-        .active-section { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .pro-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* Header Deportivo */
+        .header { background: linear-gradient(90deg, #1a2a6c, #2a48ad); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .header h1 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-size: 2.2em; }
         
-        /* Salón de la Fama */
-        .history-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .stat-item { background: #111; padding: 12px; border-radius: 6px; border-left: 3px solid var(--gold); margin-bottom: 8px; font-size: 0.85em; display: flex; justify-content: space-between; }
-        .stat-label { color: var(--gold); font-family: 'Cinzel'; font-size: 0.75em; display: block; margin-bottom: 3px; }
+        /* Navegación */
+        nav { display: flex; justify-content: center; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .tab-btn { background: none; border: none; color: #666; padding: 15px 25px; font-family: 'Oswald'; cursor: pointer; font-size: 1em; transition: 0.3s; border-bottom: 3px solid transparent; }
+        .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
 
-        /* Brackets */
-        .bracket-wrapper { display: flex; gap: 40px; overflow-x: auto; padding: 20px 0; min-height: 500px; }
-        .match-box { background: #0a0a0a; border: 1px solid #222; border-radius: 5px; margin-bottom: 15px; width: 220px; overflow: hidden; }
-        .p-slot { padding: 12px; cursor: pointer; border-bottom: 1px solid #1a1a1a; font-size: 0.85em; display: flex; justify-content: space-between; transition: 0.2s; }
-        .p-slot:hover { background: rgba(212, 175, 55, 0.1); }
-        .winner { background: rgba(46, 125, 50, 0.25) !important; color: #a5d6a7; font-weight: bold; }
-        .vacante-text { color: #555; font-style: italic; font-size: 0.75em; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: none; }
+        .active-section { display: block; }
 
-        textarea, .btn-gold { width: 100%; padding: 15px; margin-top: 10px; border-radius: 5px; font-family: 'Cinzel'; font-weight: bold; border: 1px solid var(--gold); box-sizing: border-box; }
-        textarea { background: #000; color: #0f0; height: 180px; font-family: monospace; outline: none; }
-        .btn-gold { background: var(--gold); color: #000; cursor: pointer; transition: 0.3s; }
-        .btn-gold:hover { background: #fff; box-shadow: 0 0 15px var(--gold); }
+        .card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
+        
+        /* Brackets Deportivos */
+        .bracket-wrapper { display: flex; gap: 30px; overflow-x: auto; padding: 20px 0; }
+        .round-col { min-width: 220px; display: flex; flex-direction: column; justify-content: space-around; }
+        .round-name { font-family: 'Oswald'; text-align: center; color: var(--primary); background: #eee; padding: 5px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9em; }
+
+        .match-card { background: #fff; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow: hidden; }
+        .player-row { padding: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; font-size: 0.9em; }
+        .player-row:last-child { border-bottom: none; }
+        .player-row:hover { background: #f9f9f9; }
+        .player-row.winner { background: #e8f5e9 !important; color: #2e7d32; font-weight: bold; }
+        .wand-icon { opacity: 0.3; font-size: 1.2em; }
+        .winner .wand-icon { opacity: 1; color: var(--accent); }
+
+        /* Admin UI */
+        textarea, input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; margin-top: 10px; box-sizing: border-box; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 4px; font-family: 'Oswald'; font-size: 1.1em; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn-main:hover { background: #0d1640; }
+        .btn-reset { background: #f44336; color: white; border: none; padding: 8px; margin-top: 20px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 0.8em; }
+
+        /* Status bar */
+        #status-bar { font-size: 0.7em; color: #fff; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 3px; display: inline-block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>Hogwarts Orión</h1>
-    <div id="sync-status" style="font-size:0.6em; color:#81c784; letter-spacing: 2px;">● CONEXIÓN CON EL MINISTERIO ACTIVA</div>
+    <h1>Arena Hogwarts Orión</h1>
+    <div id="status-bar">MODO LECTURA ACTIVO</div>
 </div>
 
 <nav>
-    <button class="tab-btn active" onclick="navTo('history')">Salón de la Fama</button>
-    <button class="tab-btn" onclick="navTo('bracket')">Duelos Actuales</button>
-    <button class="tab-btn" onclick="navTo('setup')">Oficina del Director</button>
+    <button class="tab-btn active" onclick="navTo('bracket')">Resultados en Vivo</button>
+    <button class="tab-btn" onclick="navTo('hall')">Salón de la Fama</button>
+    <button class="tab-btn" onclick="navTo('admin')">Gestión de Torneos</button>
 </nav>
 
-<div id="history" class="container active-section">
-    <div class="history-grid">
-        <div class="pro-card">
-            <h3 style="font-family:'Cinzel'; color:var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 10px;">🏆 Campeones Mundiales</h3>
-            <div id="champions-list">
-                <div class="stat-item"><span>Edición 1: Jere y Flor</span> <span>🇧🇪</span></div>
-                <div class="stat-item"><span>Edición 2: Jere</span> <span>🇧🇷</span></div>
-                <div class="stat-item"><span>Edición 3: Gabriel</span> <span>🇮🇸</span></div>
-                <div class="stat-item"><span>Edición 4: Darianny</span> <span>🇻🇪</span></div>
-                <div class="stat-item"><span>Edición 5: Luis</span> <span>🇮🇶</span></div>
-                <div class="stat-item"><span>Edición 6: Angélica</span> <span>🇹🇷</span></div>
-            </div>
-        </div>
-        <div class="pro-card">
-            <h3 style="font-family:'Cinzel'; color:var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 10px;">🏅 Medallero Mundial</h3>
-            <div style="font-size: 0.85em; line-height: 1.8; color: #ccc;">
-                <strong>Jere:</strong> 🥇🥇🥉🥉<br>
-                <strong>Gabriel:</strong> 🥇🥉🥉🥉🥉<br>
-                <strong>Darianny / Luis:</strong> 🥇🥉<br>
-                <strong>Jus / Flor:</strong> 🥇<br>
-                <strong>Davs / Estela:</strong> 🥈🥈<br>
-                <strong>Isidora:</strong> 🥈🥉🥉<br>
-                <strong>Andra / Molly / Isaac:</strong> 🥈
-            </div>
-        </div>
-        <div class="pro-card">
-            <h3 style="font-family:'Cinzel'; color:var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 10px;">🛡 Récords de Defensa</h3>
-            <div class="stat-item"><div><span class="stat-label">Mejor Puntaje Grupal</span>Selecciones 🇻🇪🇬🇷</div> <span>7 pts</span></div>
-            <div class="stat-item"><div><span class="stat-label">Consistencia Defensiva</span>Gabriel (🇮🇸)</div> <span>4 Tops</span></div>
-            <div class="stat-item"><div><span class="stat-label">Muro de Japón</span>Andra (🇯🇵)</div> <span>2 pts</span></div>
-        </div>
-    </div>
-</div>
-
-<div id="bracket" class="container" style="max-width: 100%;">
-    <div class="pro-card" style="overflow-x:auto;">
-        <h3 id="bracket-title" style="font-family:'Cinzel'; text-align:center; color:var(--gold);">Cargando Duelos...</h3>
+<div id="bracket" class="container active-section" style="max-width: 100%;">
+    <div class="card">
+        <h3 id="tournament-title" style="margin-top:0; color:var(--primary); font-family: 'Oswald';">Cargando Torneo...</h3>
         <div id="bracket-root" class="bracket-wrapper"></div>
     </div>
 </div>
 
-<div id="setup" class="container">
-    <div class="pro-card">
-        <h3 style="font-family:'Cinzel'; color:var(--gold);">Registrar Nuevos Duelistas</h3>
-        <p style="font-size: 0.75em; color: #888; margin-bottom: 15px;">Pega los nombres de los alumnos que se inscribieron. El sistema cubrirá los puestos faltantes con "Duelos Cancelados".</p>
-        <textarea id="t-players" placeholder="Jere (Brasil)&#10;Gabo (Islandia)&#10;Flor (Belgica)..."></textarea>
-        <button class="btn-gold" onclick="generateTournament()">INICIAR TORNEO DINÁMICO ⚡</button>
-        <button onclick="resetTournament()" style="background:#200; color:#f88; border:1px solid #411; width:100%; padding:10px; cursor:pointer; font-family:'Cinzel'; border-radius:5px; margin-top:20px;">RESET TOTAL</button>
+<div id="hall" class="container">
+    <div class="card">
+        <h2 style="font-family:'Oswald'; color:var(--primary); text-align:center;">🏆 Historial de Campeones</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 1</strong><br>Jere y Flor (🇧🇪)
+            </div>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 2</strong><br>Jere (🇧🇷)
+            </div>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 3</strong><br>Gabriel (🇮🇸)
+            </div>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 4</strong><br>Darianny (🇻🇪)
+            </div>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 5</strong><br>Luis (🇮🇶)
+            </div>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>Edición 6</strong><br>Angélica (🇹🇷)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="admin" class="container">
+    <div class="card">
+        <h3 style="font-family:'Oswald'; color:var(--primary); margin-top:0;">🔐 Panel de Control</h3>
+        <p style="font-size: 0.8em; color:#666;">Introduce el PIN de administrador para realizar cambios.</p>
+        <input type="password" id="admin-pin" placeholder="Escribe el Hechizo de Acceso...">
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        
+        <label>Lista de Duelistas:</label>
+        <textarea id="list-input" placeholder="Un nombre por línea..."></textarea>
+        <button class="btn-main" onclick="startTournament()">CREAR NUEVO TORNEO 🪄</button>
+        
+        <button class="btn-reset" onclick="resetCloud()">BORRAR DATOS DE LA NUBE</button>
     </div>
 </div>
 
 <script>
     const FB_URL = "https://torneo-de-duelos-default-rtdb.firebaseio.com/torneo.json";
+    const ADMIN_PIN = "TU_PIN_AQUÍ"; // CAMBIA ESTO
 
     function navTo(id) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active-section'));
@@ -126,18 +130,17 @@
         if(data) renderUI(data.size, data.matches);
     }
 
-    function generateTournament() {
-        let players = document.getElementById('t-players').value.split('\n').filter(n => n.trim() !== "");
-        if(players.length < 2) return alert("¡Por Merlín! Necesitas al menos 2 magos.");
+    function startTournament() {
+        if(document.getElementById('admin-pin').value !== ADMIN_PIN) return alert("PIN Incorrecto. No tienes permiso.");
+        
+        let players = document.getElementById('list-input').value.split('\n').filter(n => n.trim() !== "");
+        if(players.length < 2) return alert("Faltan jugadores.");
 
-        const count = players.length;
         let size = 2;
-        while(size < count) { size *= 2; }
-
-        // AQUÍ AGREGAMOS LAS VACANTES TEMÁTICAS
-        while(players.length < size) { players.push("--- DUELO CANCELADO ---"); }
+        while(size < players.length) size *= 2;
+        while(players.length < size) players.push("--- DUELO CANCELADO ---");
+        
         players = players.sort(() => Math.random() - 0.5);
-
         const matches = {};
         for(let i=0; i<players.length; i++) {
             let m = Math.floor(i/2), p = i%2;
@@ -151,28 +154,23 @@
         const root = document.getElementById('bracket-root');
         root.innerHTML = "";
         const rounds = Math.log2(size);
-        document.getElementById('bracket-title').innerText = `Torneo de ${size} Magos`;
+        document.getElementById('tournament-title').innerText = `COPA MUNDIALISTA (${size} PARTICIPANTES)`;
 
         for(let r=0; r<rounds; r++) {
             const col = document.createElement('div');
-            col.style.minWidth = "230px";
-            col.innerHTML = `<h4 style="font-family:'Cinzel'; color:var(--gold); text-align:center; font-size:0.7em; border-bottom:1px solid var(--border); margin-bottom:15px; padding-bottom:5px;">RONDA ${r+1}</h4>`;
+            col.className = 'round-col';
+            col.innerHTML = `<div class="round-name">RONDA ${r+1}</div>`;
             
             let numM = size / Math.pow(2, r+1);
             for(let m=0; m<numM; m++) {
                 const box = document.createElement('div');
-                box.className = 'match-box';
+                box.className = 'match-card';
                 for(let p=0; p<2; p++) {
                     const id = `r${r}m${m}p${p}`;
                     const d = matches[id] || { name: "?", win: false };
-                    const isVacante = d.name.includes("CANCELADO");
-                    
                     const div = document.createElement('div');
-                    div.className = `p-slot ${d.win ? 'winner' : ''}`;
-                    div.innerHTML = `
-                        <span class="${isVacante ? 'vacante-text' : ''}">${d.name}</span> 
-                        <span>${d.win ? '🏆' : ''}</span>
-                    `;
+                    div.className = `player-row ${d.win ? 'winner' : ''}`;
+                    div.innerHTML = `<span>${d.name}</span> <span class="wand-icon">🪄</span>`;
                     div.onclick = () => handleWin(r, m, p, size, matches);
                     box.appendChild(div);
                 }
@@ -183,9 +181,12 @@
     }
 
     async function handleWin(r, m, p, size, matches) {
+        if(document.getElementById('admin-pin').value !== ADMIN_PIN) {
+            return alert("Acceso denegado. Solo administradores con PIN pueden marcar resultados.");
+        }
+
         const id = `r${r}m${m}p${p}`;
-        const name = matches[id]?.name || "?";
-        if(name === "?" || name.includes("CANCELADO")) return;
+        if(matches[id].name.includes("CANCELADO")) return;
 
         matches[`r${r}m${m}p0`].win = false;
         matches[`r${r}m${m}p1`].win = false;
@@ -193,19 +194,15 @@
 
         const nextR = r + 1, nextM = Math.floor(m/2), nextP = m%2;
         if(nextR < Math.log2(size)) {
-            matches[`r${nextR}m${nextM}p${nextP}`] = { name: name, win: false };
-        } else {
-            // LÓGICA DE FINAL
-            setTimeout(() => {
-                alert(`¡Felicidades a ${name}! Ganador de la Copa Hogwarts Orión.`);
-            }, 500);
+            matches[`r${nextR}m${nextM}p${nextP}`] = { name: matches[id].name, win: false };
         }
         await sync({ size, matches });
         renderUI(size, matches);
     }
 
-    async function resetTournament() {
-        if(confirm("¿Seguro que quieres borrar todo el torneo actual?")) {
+    async function resetCloud() {
+        if(document.getElementById('admin-pin').value !== ADMIN_PIN) return alert("No permitido.");
+        if(confirm("¿Borrar todo?")) {
             await fetch(FB_URL, { method: 'DELETE' });
             location.reload();
         }
@@ -215,4 +212,3 @@
 </script>
 </body>
 </html>
-
