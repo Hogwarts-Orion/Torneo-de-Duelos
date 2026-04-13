@@ -10,203 +10,307 @@
         :root { --one-green: #00ff85; --one-dark: #0d1117; --one-card: #ffffff; --one-bg: #f3f4f6; --one-text: #111827; --one-gray: #6b7280; }
         body { margin: 0; background: var(--one-bg); color: var(--one-text); font-family: 'Outfit', sans-serif; }
 
-        /* Estilos de UI */
+        /* Notificaciones */
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px; }
+        .toast { background: var(--one-dark); color: white; padding: 16px 24px; border-radius: 12px; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; animation: slideUp 0.4s ease forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Header y Nav */
         .header { background: var(--one-dark); color: white; padding: 40px 20px; border-bottom: 4px solid var(--one-green); text-align: center; }
-        .header p { color: var(--one-green); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; margin: 0; }
-        .header h1 { margin: 5px 0 0; font-size: 2.2rem; font-weight: 800; }
+        .header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; }
+        .header p { margin: 5px 0 0; color: var(--one-green); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; }
 
         nav { display: flex; background: var(--one-card); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .nav-item { flex: 1; text-align: center; padding: 15px 0; font-weight: 700; color: var(--one-gray); cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; font-size: 0.8rem; }
+        .nav-item { flex: 1; text-align: center; padding: 18px 0; font-weight: 700; color: var(--one-gray); cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; font-size: 0.8rem; text-transform: uppercase; }
         .nav-item.active { color: var(--one-dark); border-bottom-color: var(--one-green); }
 
         .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: none; }
         .active-section { display: block; }
 
-        /* Cards y Tablas */
-        .stat-card { background: white; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb; margin-bottom: 20px; }
+        /* Brackets y Grupos */
         .bracket-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
-        .duel-card { background: white; border-radius: 12px; margin-bottom: 10px; border: 1px solid #e5e7eb; overflow: hidden; }
-        .player-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f3f4f6; }
+        .duel-card { background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e5e7eb; overflow: hidden; }
+        .player-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; }
         .winner { background: rgba(0, 255, 133, 0.1); font-weight: 800; }
+        .score-box { background: #f3f4f6; padding: 4px 10px; border-radius: 6px; font-weight: 800; }
 
-        /* Admin Form */
-        .admin-form { display: grid; gap: 15px; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: 'Outfit'; box-sizing: border-box; }
-        .btn-primary { background: var(--one-dark); color: white; padding: 15px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        .btn-primary:hover { background: var(--one-green); color: var(--one-dark); }
+        /* Tablas */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f3f4f6; }
+        th { background: #f9fafb; color: var(--one-gray); font-size: 0.8rem; }
 
-        #score-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        /* Admin */
+        .admin-box { background: white; padding: 25px; border-radius: 16px; border: 1px solid #e5e7eb; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Outfit'; box-sizing: border-box; }
+        .btn-primary { background: var(--one-dark); color: white; width: 100%; padding: 15px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
+
+        /* Modal */
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
         .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
     </style>
 </head>
 <body>
 
+<div id="toast-container"></div>
+
+<div id="modal">
+    <div class="modal-content">
+        <h3 id="modal-title">Resultado del Duelo</h3>
+        <p id="modal-names" style="color: var(--one-gray);"></p>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;">
+            <input type="number" id="sc1" style="width: 80px; font-size: 2rem; text-align: center;" placeholder="0">
+            <span style="font-weight: 800; font-size: 1.5rem;">-</span>
+            <input type="number" id="sc2" style="width: 80px; font-size: 2rem; text-align: center;" placeholder="0">
+        </div>
+        <button class="btn-primary" onclick="confirmScore()">ACTUALIZAR DUELO</button>
+        <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:15px; cursor:pointer;">Cancelar</button>
+    </div>
+</div>
+
 <div class="header">
-    <p>Hogwarts Orión System</p>
+    <p>Hogwarts Orión Manager</p>
     <h1>Centro de Duelos</h1>
 </div>
 
 <nav>
     <div class="nav-item active" onclick="navTo('duels')">Duelos</div>
-    <div class="nav-item" onclick="navTo('stats')">Estadísticas</div>
+    <div class="nav-item" onclick="navTo('stats')">Posiciones</div>
     <div class="nav-item" onclick="navTo('hall')">Histórico</div>
-    <div class="nav-item" onclick="navTo('admin')">Gestión</div>
+    <div class="nav-item" onclick="navTo('admin')">Admin</div>
 </nav>
 
 <div id="duels" class="container active-section">
-    <div id="bracket-root" class="bracket-scroll">
-        <p style="text-align: center; color: gray;">Cargando duelos activos...</p>
-    </div>
+    <div id="duels-root"></div>
 </div>
 
 <div id="stats" class="container">
-    <div class="stat-card">
-        <h3>🏆 Ranking de Duelistas</h3>
-        <div id="top-scorers"></div>
-    </div>
+    <div id="groups-root"></div>
 </div>
 
 <div id="hall" class="container">
-    <h3>🏛️ Salón de la Fama</h3>
-    <div id="hall-list"></div>
+    <div id="hall-root"></div>
 </div>
 
 <div id="admin" class="container">
-    <div class="stat-card">
-        <h2>Panel de Configuración</h2>
-        <div class="admin-form">
-            <input type="password" id="admin-pin" placeholder="PIN de Seguridad">
-            <hr>
-            <h4>Nuevo Torneo</h4>
+    <div class="admin-box">
+        <h2>Panel de Control</h2>
+        <div class="form-group">
+            <label>PIN de Acceso</label>
+            <input type="password" id="admin-pin" placeholder="••••">
+        </div>
+        <hr>
+        <h3>Configurar Nuevo Torneo</h3>
+        <div class="form-group">
+            <label>Tipo de Torneo</label>
             <select id="t-type">
-                <option value="elimination">Eliminación Directa (Copa)</option>
-                <option value="groups">Fase de Grupos + Eliminatorias</option>
+                <option value="cup">Copa (Eliminación Directa)</option>
+                <option value="groups">Fase de Grupos + Finales</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label>Formato</label>
             <select id="t-mode">
-                <option value="1v1">Modo 1 vs 1</option>
-                <option value="2v2">Modo 2 vs 2</option>
-                <option value="3v3">Modo 3 vs 3</option>
+                <option value="1vs1">1 vs 1</option>
+                <option value="2vs2">2 vs 2</option>
+                <option value="3vs3">3 vs 3</option>
             </select>
-            <input type="number" id="t-diff" placeholder="Diferencia de puntos mínima (ej: 2)">
-            <textarea id="t-players" placeholder="Lista de jugadores/parejas (uno por línea)" rows="5"></textarea>
-            <button class="btn-primary" onclick="setupTournament()">CREAR TORNEO</button>
-            <hr>
-            <h4>Gestionar Histórico</h4>
-            <input type="text" id="h-title" placeholder="Edición (ej: Edición 7)">
-            <input type="text" id="h-winner" placeholder="Ganador/a">
-            <button class="btn-primary" style="background: #6b7280;" onclick="addHistory()">AÑADIR AL HISTÓRICO</button>
         </div>
-    </div>
-</div>
-
-<div id="score-modal">
-    <div class="modal-content">
-        <h3>Resultado del Duelo</h3>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <input type="number" id="sc1" style="width: 70px; font-size: 1.5rem; text-align: center;">
-            <span>-</span>
-            <input type="number" id="sc2" style="width: 70px; font-size: 1.5rem; text-align: center;">
+        <div class="form-group">
+            <label>Diferencia mínima de puntos</label>
+            <input type="number" id="t-diff" value="2">
         </div>
-        <button class="btn-primary" onclick="saveDuel()">GUARDAR</button>
-        <button onclick="closeModal()" style="border:none; background:none; margin-top:10px; color:gray; cursor:pointer;">Cerrar</button>
+        <div class="form-group">
+            <label>Duelistas (uno por línea)</label>
+            <textarea id="t-players" rows="6" placeholder="Ej: Harry Potter&#10;Draco Malfoy"></textarea>
+        </div>
+        <button class="btn-primary" onclick="createTournament()">INICIAR TEMPORADA</button>
+        
+        <hr style="margin: 30px 0;">
+        <h3>Añadir al Histórico</h3>
+        <input type="text" id="h-title" placeholder="Ej: Torneo de Verano 2026" style="margin-bottom: 10px;">
+        <input type="text" id="h-winner" placeholder="Nombre del Campeón">
+        <button class="btn-primary" style="background: #4b5563;" onclick="saveHistory()">GUARDAR RÉCORD</button>
     </div>
 </div>
 
 <script>
-    const FB_URL = "https://torneo-de-duelos-default-rtdb.firebaseio.com/hogwarts_orion.json";
-    const ADMIN_PIN = "OrionDuel2026"; // Cambia esto según tu necesidad
-    let db = { matches: {}, history: [], config: {} };
-    let selectedMatch = null;
+    const FB_URL = "https://torneo-de-duelos-default-rtdb.firebaseio.com/hogwarts_v2.json";
+    const DEFAULT_PIN = "OrionDuel2026";
+    let db = { matches: {}, history: [], config: {}, players: [] };
+    let activeMatch = null;
 
-    async function load() {
-        try {
-            const res = await fetch(FB_URL);
-            const data = await res.json();
-            if(data) {
-                db = data;
-                renderDuelos();
-                renderHistory();
-            }
-        } catch(e) { console.error("Error cargando DB"); }
+    async function loadData() {
+        const res = await fetch(FB_URL);
+        const data = await res.json();
+        if(data) {
+            db = data;
+            renderAll();
+        }
     }
 
     function navTo(id) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active-section'));
         document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active-section');
-        event.target.classList.add('active');
+        if(event) event.target.classList.add('active');
     }
 
-    async function save() {
+    function showToast(m) {
+        const c = document.getElementById('toast-container');
+        const t = document.createElement('div'); t.className = 'toast'; t.innerText = m;
+        c.appendChild(t); setTimeout(() => t.remove(), 3000);
+    }
+
+    async function sync() {
         await fetch(FB_URL, { method: 'PUT', body: JSON.stringify(db) });
-        load();
+        loadData();
     }
 
-    function setupTournament() {
-        if(document.getElementById('admin-pin').value !== ADMIN_PIN) return alert("PIN Incorrecto");
+    function createTournament() {
+        if(document.getElementById('admin-pin').value !== DEFAULT_PIN) return showToast("PIN incorrecto");
         
-        const players = document.getElementById('t-players').value.split('\n').filter(p => p.trim() !== "");
-        const diff = parseInt(document.getElementById('t-diff').value) || 2;
-        
-        db.config = { 
-            mode: document.getElementById('t-mode').value,
+        const rawPlayers = document.getElementById('t-players').value.split('\n').filter(p => p.trim() !== "");
+        if(rawPlayers.length < 2) return showToast("Mínimo 2 duelistas");
+
+        db.config = {
             type: document.getElementById('t-type').value,
-            diff: diff
+            mode: document.getElementById('t-mode').value,
+            diff: parseInt(document.getElementById('t-diff').value) || 2
         };
-
-        // Lógica simple de bracket (potencia de 2)
-        let size = 2; while(size < players.length) size *= 2;
-        while(players.length < size) players.push("Duelo Libre 🟢");
-        
+        db.players = rawPlayers;
         db.matches = {};
-        players.sort(() => Math.random() - 0.5).forEach((name, i) => {
-            let m = Math.floor(i/2), p = i%2;
-            db.matches[`r0m${m}p${p}`] = { name, score: 0, win: false };
-        });
 
-        save();
-        alert("Torneo creado con éxito");
+        if(db.config.type === 'cup') {
+            let size = 2; while(size < rawPlayers.length) size *= 2;
+            let pList = [...rawPlayers];
+            while(pList.length < size) pList.push("Duelo Libre 🟢");
+            pList.sort(() => Math.random() - 0.5);
+            pList.forEach((n, i) => {
+                db.matches[`r0m${Math.floor(i/2)}p${i%2}`] = { name: n, score: 0, win: false };
+            });
+        } else {
+            // Lógica de Grupos A y B
+            rawPlayers.sort(() => Math.random() - 0.5);
+            rawPlayers.forEach((n, i) => {
+                const group = i < rawPlayers.length / 2 ? 'A' : 'B';
+                db.matches[`group${group}_p${i}`] = { name: n, score: 0, pts: 0, pj: 0 };
+            });
+        }
+        sync();
+        showToast("Torneo Configurado");
+        navTo('duels');
     }
 
-    function renderDuelos() {
-        const root = document.getElementById('bracket-root');
-        if(!db.matches) return root.innerHTML = "No hay torneo activo";
-        
+    function openModal(id1, id2) {
+        if(document.getElementById('admin-pin').value !== DEFAULT_PIN) return showToast("Modo solo lectura");
+        activeMatch = { id1, id2 };
+        document.getElementById('modal-names').innerText = `${db.matches[id1].name} vs ${db.matches[id2].name}`;
+        document.getElementById('sc1').value = db.matches[id1].score;
+        document.getElementById('sc2').value = db.matches[id2].score;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+    function confirmScore() {
+        const s1 = parseInt(document.getElementById('sc1').value) || 0;
+        const s2 = parseInt(document.getElementById('sc2').value) || 0;
+        const diff = Math.abs(s1 - s2);
+
+        if(diff < db.config.diff && db.config.type === 'cup') {
+            return showToast(`Diferencia mínima: ${db.config.diff}`);
+        }
+
+        db.matches[activeMatch.id1].score = s1;
+        db.matches[activeMatch.id2].score = s2;
+        db.matches[activeMatch.id1].win = s1 > s2;
+        db.matches[activeMatch.id2].win = s2 > s1;
+
+        // Si es Copa, avanzar al ganador
+        if(db.config.type === 'cup') {
+            const parts = activeMatch.id1.match(/r(\d+)m(\d+)/);
+            const r = parseInt(parts[1]), m = parseInt(parts[2]);
+            const nextR = r + 1, nextM = Math.floor(m/2), nextP = m % 2;
+            const winner = s1 > s2 ? db.matches[activeMatch.id1].name : db.matches[activeMatch.id2].name;
+            db.matches[`r${nextR}m${nextM}p${nextP}`] = { name: winner, score: 0, win: false };
+        }
+
+        sync();
+        closeModal();
+        if(s1 > 10 || s2 > 10) confetti({ particleCount: 100 });
+    }
+
+    function renderAll() {
+        renderDuels();
+        renderStats();
+        renderHistoryList();
+    }
+
+    function renderDuels() {
+        const root = document.getElementById('duels-root');
         root.innerHTML = "";
-        const rounds = 3; // Ejemplo simplificado para 8 participantes
-        for(let r=0; r<rounds; r++) {
-            const col = document.createElement('div');
-            col.style.minWidth = "250px";
-            col.innerHTML = `<h4>Ronda ${r+1}</h4>`;
-            // Lógica de renderizado de duelos...
-            // (Similar al anterior pero usando db.config.mode)
-            root.appendChild(col);
+        if(db.config.type === 'cup') {
+            const scroll = document.createElement('div'); scroll.className = 'bracket-scroll';
+            // Render simplificado de 3 rondas
+            for(let r=0; r<3; r++) {
+                const col = document.createElement('div'); col.style.minWidth = "280px";
+                col.innerHTML = `<h3>Ronda ${r+1}</h3>`;
+                for(let m=0; m<8/Math.pow(2,r+1); m++) {
+                    const card = document.createElement('div'); card.className = 'duel-card';
+                    const p1 = db.matches[`r${r}m${m}p0`] || { name: '?', score: 0 };
+                    const p2 = db.matches[`r${r}m${m}p1`] || { name: '?', score: 0 };
+                    card.onclick = () => openModal(`r${r}m${m}p0`, `r${r}m${m}p1`);
+                    card.innerHTML = `
+                        <div class="player-row ${p1.win?'winner':''}"><span>${p1.name}</span><span class="score-box">${p1.score}</span></div>
+                        <div class="player-row ${p2.win?'winner':''}"><span>${p2.name}</span><span class="score-box">${p2.score}</span></div>
+                    `;
+                    col.appendChild(card);
+                }
+                scroll.appendChild(col);
+            }
+            root.appendChild(scroll);
+        } else {
+            root.innerHTML = "<p style='text-align:center'>Usa la sección de Posiciones para ver el avance de grupos.</p>";
         }
     }
 
-    function addHistory() {
-        if(document.getElementById('admin-pin').value !== ADMIN_PIN) return alert("PIN Incorrecto");
-        const entry = {
-            title: document.getElementById('h-title').value,
-            winner: document.getElementById('h-winner').value
-        };
+    function renderStats() {
+        const root = document.getElementById('groups-root');
+        root.innerHTML = "<h3>Tabla de Posiciones</h3>";
+        let html = "<table><thead><tr><th>Duelista</th><th>PJ</th><th>Pts</th></tr></thead><tbody>";
+        const sorted = Object.values(db.matches).sort((a,b) => (b.pts||0) - (a.pts||0));
+        sorted.forEach(p => {
+            if(p.name) html += `<tr><td>${p.name}</td><td>${p.pj||0}</td><td><strong>${p.pts||0}</strong></td></tr>`;
+        });
+        root.innerHTML += html + "</tbody></table>";
+    }
+
+    function saveHistory() {
+        if(document.getElementById('admin-pin').value !== DEFAULT_PIN) return showToast("PIN incorrecto");
+        const h = { title: document.getElementById('h-title').value, winner: document.getElementById('h-winner').value };
         if(!db.history) db.history = [];
-        db.history.unshift(entry);
-        save();
+        db.history.unshift(h);
+        sync();
+        showToast("Historial actualizado");
     }
 
-    function renderHistory() {
-        const list = document.getElementById('hall-list');
-        list.innerHTML = db.history ? db.history.map(h => `
-            <div class="stat-card">
-                <strong>${h.title}:</strong> ${h.winner} 🏆
-            </div>
-        `).join("") : "No hay registros";
+    function renderHistoryList() {
+        const root = document.getElementById('hall-root');
+        root.innerHTML = "<h3>Historial de Campeones</h3>";
+        if(!db.history) return root.innerHTML += "<p>No hay registros aún.</p>";
+        db.history.forEach(item => {
+            root.innerHTML += `
+                <div class="duel-card" style="padding: 20px;">
+                    <strong>${item.title}</strong><br>
+                    <span style="color: var(--one-green); font-weight: 800;">🏆 Ganador: ${item.winner}</span>
+                </div>
+            `;
+        });
     }
 
-    function closeModal() { document.getElementById('score-modal').style.display = 'none'; }
-
-    window.onload = load;
+    window.onload = loadData;
 </script>
 </body>
 </html>
